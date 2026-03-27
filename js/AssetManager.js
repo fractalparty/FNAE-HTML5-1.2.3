@@ -108,12 +108,10 @@ class AssetManager {
         this.loaded = true;
     }
 
-    getBasePath() {
-        // 检查是否在 iframe 中
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('/FNAE-HTML5-1.2.3/')) {
-            return '/FNAE-HTML5-1.2.3/';
-        }
+   getBasePath() {
+    // This forces the game to look in the folder where index.html lives
+    return './'; 
+}
         // 本地开发环境
         return './';
     }
