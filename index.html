@@ -1,105 +1,18 @@
-<div id="gameLoader" style="width:100%; height:650px; background:black; color:white; display:flex; align-items:center; justify-content:center; font-family:sans-serif;">
-    Loading Assets...
-</div>
-
-<script>
-const GAME_INDEX = "https://rawcdn.githack.com/harshulsilverspoon/FNAE-HTML5-1.2.3/main/index.html";
-const BASE_PATH = "https://rawcdn.githack.com/harshulsilverspoon/FNAE-HTML5-1.2.3/main/";
-
-// This map connects the game's file names to your ImgBB Direct Links
-const assetMap = {
-    "winscreen.png": "https://i.ibb.co/qM796dhg/winscreen.png",
-    "Warninglight.png": "https://i.ibb.co/C38hBxmV/Warninglight.png",
-    "Warningheavy.png": "https://i.ibb.co/svZ1RL3b/Warningheavy.png",
-    "trump5.png": "https://i.ibb.co/s9MR2cW8/trump5.png",
-    "trump4.png": "https://i.ibb.co/KxK2JQQk/trump4.png",
-    "trump3.png": "https://i.ibb.co/CK6BXPhY/trump3.png",
-    "trump2.png": "https://i.ibb.co/whw5Zk8w/trump2.png",
-    "trump.png": "https://i.ibb.co/5XGSLYzQ/trump.png",
-    "star.png": "https://i.ibb.co/QjX5VSGW/star.png",
-    "scarytrump.png": "https://i.ibb.co/hxB19n1q/scarytrump.png",
-    "scaryhawking.png": "https://i.ibb.co/8DdbdRQf/scaryhawking.png",
-    "scaryhawk.png": "https://i.ibb.co/5gBzfRyb/scaryhawk.png",
-    "scaryep.png": "https://i.ibb.co/CS06B6T/scaryep.png",
-    "original.png": "https://i.ibb.co/GfFq9j3d/original.png",
-    "mrstephen.png": "https://i.ibb.co/4ZsbbJVc/mrstephen.png",
-    "menubackground.png": "https://i.ibb.co/sp4rkjRw/menubackground.png",
-    "jump.png": "https://i.ibb.co/J4yccRz/jump.png",
-    "goldenstephen.png": "https://i.ibb.co/tfLGbp7/goldenstephen.png",
-    "front.png": "https://i.ibb.co/5hrmY1Xy/front.png",
-    "FNAE-Map-layout.png": "https://i.ibb.co/6Jg0Hb8R/FNAE-Map-layout.png",
-    "fa3.png": "https://i.ibb.co/chqvPm0M/fa3.png",
-    "exp2.png": "https://i.ibb.co/21yf0hjW/exp2.png",
-    "ep4.png": "https://i.ibb.co/h1Ycq599/ep4.png",
-    "ep1.png": "https://i.ibb.co/RkYYdp7G/ep1.png",
-    "enemyep4.png": "https://i.ibb.co/k2F2GD99/enemyep4.png",
-    "enemyep1.png": "https://i.ibb.co/cKcz5xrq/enemyep1.png",
-    "cutscene.png": "https://i.ibb.co/93HywQN8/cutscene.png",
-    "Cam11.png": "https://i.ibb.co/6RNH8TdC/Cam11.png",
-    "Cam10.png": "https://i.ibb.co/21LJn628/Cam10.png",
-    "Cam9.png": "https://i.ibb.co/x8FVsWtJ/Cam9.png",
-    "Cam8.png": "https://i.ibb.co/vC6z7cjJ/Cam8.png",
-    "Cam7.png": "https://i.ibb.co/ymp0TMRZ/Cam7.png",
-    "Cam6.png": "https://i.ibb.co/zVkKSx8r/Cam6.png",
-    "Cam5.png": "https://i.ibb.co/p6cs1rfR/Cam5.png",
-    "Cam4.png": "https://i.ibb.co/c9D5LVQ/Cam4.png",
-    "Cam3.png": "https://i.ibb.co/PvTk604R/Cam3.png",
-    "Cam2.png": "https://i.ibb.co/KxxYgx4Y/Cam2.png",
-    "Cam1.png": "https://i.ibb.co/JjDzKbp2/Cam1.png"
-};
-
-async function loadGame() {
-    const container = document.getElementById("gameLoader");
-
-    try {
-        // Intercept all image requests and redirect them to ImgBB
-        const originalFetch = window.fetch;
-        window.fetch = function(resource, init) {
-            if (typeof resource === 'string') {
-                const fileName = resource.split('/').pop().split('?')[0];
-                if (assetMap[fileName]) {
-                    return originalFetch(assetMap[fileName], init);
-                }
-                // Otherwise, point to GitHub
-                if (!resource.startsWith('http')) {
-                    resource = BASE_PATH + resource;
-                }
-            }
-            return originalFetch(resource, init);
-        };
-
-        // Fetch the game HTML
-        let response = await fetch(GAME_INDEX);
-        let html = await response.text();
-
-        // Inject a BASE tag so the game knows where to find everything else (scripts, etc)
-        html = `<base href="${BASE_PATH}">` + html;
-
-        // Clean up the HTML so it fits in the div
-        html = html.replace(/<html[\s\S]*?>/i, "").replace(/<\/html>/i, "");
-        html = html.replace(/<body[\s\S]*?>/i, "").replace(/<\/body>/i, "");
-
-        container.innerHTML = html;
-
-        // Manually trigger the scripts to start the game
-        const scripts = container.querySelectorAll("script");
-        scripts.forEach(oldScript => {
-            const newScript = document.createElement("script");
-            if (oldScript.src) {
-                newScript.src = oldScript.src;
-            } else {
-                newScript.textContent = oldScript.textContent;
-            }
-            document.head.appendChild(newScript);
-        });
-
-        container.style.background = "transparent";
-
-    } catch (e) {
-        container.innerHTML = "Game failed to load assets.";
-        console.error(e);
-    }
-}
-
-loadGame();
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Game Title</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: black; }
+        /* Make sure the canvas or game div fills the screen */
+        #canvas, canvas, #game { width: 100vw; height: 100vh; display: block; }
+    </style>
+</head>
+<body>
+    <script>
+        // Check if the game is actually loading by looking at the console (F12)
+        console.log("Game initialized on Vercel...");
+    </script>
+</body>
+</html>
